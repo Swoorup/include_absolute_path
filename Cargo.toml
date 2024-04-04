@@ -1,12 +1,12 @@
 [package]
-name = "include_file_path"
-version = "0.1.2"
+name = "include_absolute_path"
+version = "0.1.3"
 edition = "2021"
 authors = ["Swoorup Joshi"]
 license = "MIT"
-description = "Macro to returns absolute path of a specified file"
-documentation = "https://docs.rs/include_file_path"
-repository = "https://github.com/Swoorup/include_file_path"
+description = "Macro to returns absolute path of a specified file or directory"
+documentation = "https://docs.rs/include_absolute_path"
+repository = "https://github.com/Swoorup/include_absolute_path"
 readme = "README.md"
 
 [lib]

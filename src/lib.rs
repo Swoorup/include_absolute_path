@@ -6,7 +6,7 @@ use proc_macro::TokenStream;
 use quote::quote;
 use syn::{parse_macro_input, LitStr};
 
-/// The `include_file_path` macro returns the absolute path of a file.
+/// The `include_absolute_path` macro returns the absolute path of a file or a directory.
 ///
 /// This macro accepts both relative and absolute paths. If the path is relative,
 /// it is considered relative to the file where the macro is called.
@@ -14,9 +14,9 @@ use syn::{parse_macro_input, LitStr};
 /// # Usage
 ///
 /// ```rust
-/// use include_file_path::include_file_path;
+/// use include_absolute_path::include_absolute_path;
 ///
-/// const FILE: &'static str = include_file_path!("../tests/test_file.txt");
+/// const FILE: &'static str = include_absolute_path!("../tests/test_file.txt");
 /// ```
 ///
 /// This will set `FILE` to the absolute path of the `src/main.rs` file relative to the file where the macro is called.
@@ -28,20 +28,20 @@ use syn::{parse_macro_input, LitStr};
 /// # Examples
 ///
 /// ```compile_fail
-/// use include_file_path::include_file_path;
+/// use include_absolute_path::include_absolute_path;
 ///
-/// const FILE: &'static str = include_file_path!("src/main.rs");
+/// const FILE: &'static str = include_absolute_path!("src/main.rs");
 /// assert!(FILE.ends_with("src/main.rs"));
 /// ```
 ///
 /// ```rust
-/// use include_file_path::include_file_path;
+/// use include_absolute_path::include_absolute_path;
 ///
-/// const FILE: &'static str = include_file_path!("/etc/passwd");
+/// const FILE: &'static str = include_absolute_path!("/etc/passwd");
 /// assert!(FILE.ends_with("/etc/passwd"));
 /// ```
 #[proc_macro]
-pub fn include_file_path(input: TokenStream) -> TokenStream {
+pub fn include_absolute_path(input: TokenStream) -> TokenStream {
     // Parse the input tokens into a string
     let path = parse_macro_input!(input as LitStr).value();
     let caller_file = proc_macro::Span::call_site().source_file().path();
