@@ -54,7 +54,15 @@ pub fn include_absolute_path(input: TokenStream) -> TokenStream {
         // If the path is absolute, use it as is
         path.to_path_buf()
     } else {
-        caller_file.parent().unwrap().join(path)
+        caller_file
+            .parent()
+            .unwrap_or_else(|| {
+                panic!(
+                    "Failed to get parent of the caller path: {}",
+                    caller_file.display()
+                )
+            })
+            .join(path)
     };
 
     let absolute_path = raw_path
@@ -62,7 +70,9 @@ pub fn include_absolute_path(input: TokenStream) -> TokenStream {
         .unwrap_or_else(|_| panic!("Failed to canonicalize path: {}", raw_path.display()));
 
     // Convert the path to a string
-    let absolute_path_str = absolute_path.to_str().unwrap();
+    let absolute_path_str = absolute_path
+        .to_str()
+        .unwrap_or_else(|| panic!("Failed to absolutize path: {}", raw_path.display()));
 
     // Return the absolute path as a string literal
     let expanded = quote! {
