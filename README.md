@@ -22,6 +22,16 @@ const FILE: &'static str = include_absolute_path!("src/main.rs");
 
 This will set `FILE` to the absolute path of the `src/main.rs` file relative to the file where the macro is called.
 
+## Environment Variable Support
+
+The `include_absolute_path!` macro also supports environment variables. You can use environment variables in the path, and they will be expanded before the path is resolved.
+
+```rust
+const HOME_DIR: &'static str = include_absolute_path!("$HOME");
+```
+
+This will set `HOME_DIR` to the absolute path of the home directory.
+
 ## How It Works
 
 The `include_absolute_path!` macro works by parsing the input path and checking if it's absolute. If it is, it returns the path as is. If it's not, it concatenates the path with the directory of the file where the macro is called to get the absolute path.
