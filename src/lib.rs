@@ -46,8 +46,12 @@ pub fn include_absolute_path(input: TokenStream) -> TokenStream {
     let path = parse_macro_input!(input as LitStr).value();
     let caller_file = proc_macro::Span::call_site().source_file().path();
 
-    // Convert the path to a Path
-    let path = std::path::Path::new(&path);
+    // Expand environment variables in the path
+    let expanded_path = shellexpand::env(&path)
+        .unwrap_or_else(|_| panic!("Failed to expand environment variable in path: {}", path));
+
+    // Convert the expanded path to a Path
+    let path = std::path::Path::new(expanded_path.as_ref());
 
     // Check if the path is absolute
     let raw_path = if path.is_absolute() {
