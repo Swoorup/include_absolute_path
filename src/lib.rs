@@ -2,6 +2,8 @@
 
 extern crate proc_macro;
 
+use std::path::Path;
+
 use proc_macro::TokenStream;
 use quote::quote;
 use syn::{parse_macro_input, LitStr};
@@ -44,7 +46,8 @@ use syn::{parse_macro_input, LitStr};
 pub fn include_absolute_path(input: TokenStream) -> TokenStream {
     // Parse the input tokens into a string
     let path = parse_macro_input!(input as LitStr).value();
-    let caller_file = proc_macro::Span::call_site().source_file().path();
+    let caller_file_str = proc_macro::Span::call_site().file();
+    let caller_file = Path::new(&caller_file_str);
 
     // Expand environment variables in the path
     let expanded_path = shellexpand::env(&path)
