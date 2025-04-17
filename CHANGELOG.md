@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.6](https://github.com/Swoorup/include_absolute_path/compare/v0.1.5...v0.1.6) - 2025-04-17
+
+### Other
+
+- Update `source_file()` to `file()` for `proc_macro_span` feature
+
 ## [0.1.5](https://github.com/Swoorup/include_absolute_path/compare/v0.1.4...v0.1.5) - 2024-12-15
 
 ### Other
