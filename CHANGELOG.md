@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.7](https://github.com/Swoorup/include_absolute_path/compare/v0.1.6...v0.1.7) - 2025-06-27
+
+### Other
+
+- Update to use 1.88 stable toolchain
+
 ## [0.1.6](https://github.com/Swoorup/include_absolute_path/compare/v0.1.5...v0.1.6) - 2025-04-17
 
 ### Other
