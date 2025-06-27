@@ -1,4 +1,4 @@
-name: Release-plz
+name: CI and Release
 
 permissions:
   pull-requests: write
@@ -8,20 +8,65 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
+  test:
+    name: Test Suite
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+      
+      - name: Cache Cargo dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            target/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+      
+      - name: Check formatting
+        run: cargo fmt --all -- --check
+      
+      - name: Run Clippy
+        run: cargo clippy -- -D warnings
+      
+      - name: Run unit tests
+        run: cargo test --lib
+      
+      - name: Run integration tests  
+        run: cargo test --test '*'
+      
+      - name: Run doc tests
+        run: cargo test --doc
+
   release-plz:
     name: Release-plz
     runs-on: ubuntu-latest
     environment: crates.io
+    needs: test
+    if: github.ref == 'refs/heads/main'
     
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      
       - name: Install Rust toolchain
-        uses: dtolnay/rust-toolchain@nightly
+        uses: dtolnay/rust-toolchain@stable
+      
       - name: Run release-plz
         uses: MarcoIeni/release-plz-action@v0.5
         env:

@@ -36,7 +36,7 @@ This will set `HOME_DIR` to the absolute path of the home directory.
 
 The `include_absolute_path!` macro works by parsing the input path and checking if it's absolute. If it is, it returns the path as is. If it's not, it concatenates the path with the directory of the file where the macro is called to get the absolute path.
 
-The macro uses the `proc_macro::Span::call_site().file()` function to get the path of the file where the macro is called. Currently this function is available as of this writing only on nightly via [`proc_macro_span`](https://github.com/rust-lang/rust/issues/54725) feature
+The macro uses the `proc_macro::Span::call_site().local_file().path()` function to get the path of the file where the macro is called. This functionality is available on stable Rust since version 1.88.0.
 
 Before returning the path, the macro checks if the file exists. If the file does not exist, it panics with a message indicating the file does not exist.
 
